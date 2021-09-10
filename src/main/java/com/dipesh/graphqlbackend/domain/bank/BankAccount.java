@@ -9,7 +9,7 @@ import java.util.UUID;
 @Value
 public class BankAccount {
    UUID id;
-   String name;
    Currency currency;
+   Client client;
 
 }

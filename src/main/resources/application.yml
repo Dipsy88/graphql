@@ -3,7 +3,7 @@ spring:
     name: graphql-backend
 
 server:
-  port: 8081
+  port: 8080
   http2:
     enabled: true
 
@@ -15,12 +15,22 @@ graphql:
     # Sets the path where GraphQL servlet will be exposed. If not specified defaults to "/graphql"
     mapping: /graphql
     cors-enabled: true
+    maxQueryDepth: 50
     cors:
       allowed-origins: http://some.domain.com
       allowed-methods: GET, HEAD, POST
+#    exception-handlers-enabled: true
   playground:
     mapping: /playground
     endpoint: /graphql
     enabled: true
+    headers:
+      Authorization: Bearer tokens
+    tabs:
+      - name: Bank account sample query
+        query: classpath:playground/bank_account.graphql
+        variables: classpath:playground/bank_account_variables.json
 
+voyager:
+  enabled: true
 
