@@ -2,37 +2,33 @@ package com.dipesh.graphqlbackend.resolver.bank;
 
 import com.dipesh.graphqlbackend.domain.bank.BankAccount;
 import com.dipesh.graphqlbackend.domain.bank.Client;
-import graphql.execution.DataFetcherResult;
 import graphql.kickstart.tools.GraphQLResolver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Slf4j
 @Component
 public class ClientResolver implements GraphQLResolver<BankAccount> {
 
-   public DataFetcherResult<Client> client(BankAccount bankAccount) {
-      log.info("Requesting client data for bank account is {}", bankAccount.getId());
+   private final ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+   public CompletableFuture<Client> client(BankAccount bankAccount) {
 
 //      throw new GraphQLException("Client unavailable");
 
-      /*return DataFetcherResult.<Client>newResult()
-              .data(Client.builder()
-                      .id(UUID.randomUUID())
-                      .firstName("Dipeshhhhh")
-                      .lastName("Pradhannnn")
-                      .build())
-              .error(new GenericGraphQLError("Could not get sub client id"))
-              .build();*/
-      return DataFetcherResult.<Client>newResult()
-              .data(Client.builder()
-                      .id(UUID.randomUUID())
-                      .firstName("Dipeshhhhh")
-                      .lastName("Pradhannnn")
-                      .build())
-               .build();
+      return CompletableFuture.supplyAsync(()-> {
+         log.info("Requesting client data for bank account is {}", bankAccount.getId());
+         return Client.builder()
+                 .id(UUID.randomUUID())
+                 .firstName("Dipeshhhh")
+                 .lastName("Pradhannnn")
+                 .build();
+      }, executorService);
 
    }
 }

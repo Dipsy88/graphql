@@ -7,10 +7,6 @@ import java.util.UUID;
 
 @Builder
 @Value
-public class BankAccount {
+public class Asset {
    UUID id;
-   Currency currency;
-   Client client;
-   Asset asset;
-
 }
